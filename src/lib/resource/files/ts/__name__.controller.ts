@@ -18,7 +18,6 @@ import { ApiPaginate } from 'src/decorators/paginate.decorator';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { ApiTags } from '@nestjs/swagger';
 
-
 @ApiTags('<%= classify(name) %>')
 <% if (type === 'rest') { %>@Controller('<%= dasherize(name) %>')<% } else { %>@Controller()<% } %>
 export class <%= classify(name) %>Controller {

@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 
-
 @Injectable()
 export class <%= classify(name) %>Service {<% if (crud) { %>
 
@@ -21,8 +20,8 @@ export class <%= classify(name) %>Service {<% if (crud) { %>
     return this.<%= lowercased(singular(classify(name))) %>Repository.save(create<%= singular(classify(name)) %>Dto);
   }
 
-   findAll(query: PaginateQuery): Promise<Paginated<<%= singular(classify(name)) %>>>{
-    return paginate(query,this.<%= lowercased(singular(classify(name))) %>Repository, { 
+  findAll(query: PaginateQuery): Promise<Paginated<<%= singular(classify(name)) %>>> {
+    return paginate(query, this.<%= lowercased(singular(classify(name))) %>Repository, { 
       sortableColumns: ['id'],
     });
   }
