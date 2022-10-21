@@ -1,4 +1,12 @@
-<% if (crud && type === 'rest') { %>import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';<%
+<% if (crud && type === 'rest') { %>import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';<%
 } else if (crud && type === 'microservice') { %>import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';<%
 } else { %>import { Controller } from '@nestjs/common';<%
@@ -6,7 +14,12 @@ import { MessagePattern, Payload } from '@nestjs/microservices';<%
 import { <%= classify(name) %>Service } from './<%= name %>.service';<% if (crud) { %>
 import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singular(name) %>.dto';
 import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';<% } %>
+import { ApiPaginate } from 'src/decorators/paginate.decorator';
+import { Paginate, PaginateQuery } from 'nestjs-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('<%= classify(name) %>')
 <% if (type === 'rest') { %>@Controller('<%= dasherize(name) %>')<% } else { %>@Controller()<% } %>
 export class <%= classify(name) %>Controller {
   constructor(private readonly <%= lowercased(name) %>Service: <%= classify(name) %>Service) {}<% if (type === 'rest' && crud) { %>
@@ -16,9 +29,10 @@ export class <%= classify(name) %>Controller {
     return this.<%= lowercased(name) %>Service.create(create<%= singular(classify(name)) %>Dto);
   }
 
+  @ApiPaginate()
   @Get()
-  findAll() {
-    return this.<%= lowercased(name) %>Service.findAll();
+  findAll(@Paginate() query: PaginateQuery) {
+    return this.<%= lowercased(name) %>Service.findAll(query);
   }
 
   @Get(':id')
