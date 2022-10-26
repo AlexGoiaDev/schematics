@@ -14,6 +14,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';<%
 import { <%= classify(name) %>Service } from './<%= name %>.service';<% if (crud) { %>
 import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singular(name) %>.dto';
 import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';<% } %>
+import { Pagination<%= singular(classify(name)) %> } from './dto/pagination-<%= singular(name) %>.dto';<% } %>
 import { ApiPaginate } from 'src/decorators/paginate.decorator';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { ApiTags } from '@nestjs/swagger';
@@ -29,6 +30,9 @@ export class <%= classify(name) %>Controller {
   }
 
   @ApiPaginate()
+  @ApiOkResponse({
+    type: Pagination<%= singular(classify(name)) %>,
+  })
   @Get()
   findAll(@Paginate() query: PaginateQuery) {
     return this.<%= lowercased(name) %>Service.findAll(query);
